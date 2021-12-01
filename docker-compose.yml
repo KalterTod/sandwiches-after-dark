@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+    sandwiches-after-dark:
+        build: .
+        environment:
+         - CGO_ENABLED=0
+         - GOARCH=amd64
+        ports:
+         - "8080:8080"
