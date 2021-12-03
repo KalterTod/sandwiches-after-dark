@@ -10,8 +10,8 @@ import (
 
 func handleRequests() {
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/menu", menu.Menu)
-	// router.HandleFunc("/item-options/{id}", menu.ItemOptions)
+	router.HandleFunc("/menu", menu.Menu).Methods("GET")
+	router.HandleFunc("/item/{id}", menu.Item).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
