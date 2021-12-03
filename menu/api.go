@@ -1,31 +1,35 @@
 package menu
 
 import (
-  "encoding/json"
-  "net/http"
-  "go.mongodb.org/mongo-driver/mongo"
-  "go.mongodb.org/mongo-driver/bson"
-  "context"
-  "sandwiches-after-dark/db"
-  "github.com/gorilla/mux"
-  "go.mongodb.org/mongo-driver/bson/primitive"
+    "encoding/json"
+    "net/http"
+    "go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/bson"
+    "context"
+    "sandwiches-after-dark/db"
+    "github.com/gorilla/mux"
+    "go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var Client *mongo.Client
+var CTX context.Context
 
 func Menu(response http.ResponseWriter, request *http.Request) {
+    // Set up content-type and define collection
     response.Header().Set("content-type", "application/json")
     collection := db.Session.Database("sandwiches-after-dark").Collection("menu")
-    cursor, currErr := collection.Find(context.TODO(), bson.M{})
+
+    // Create cursor to be used for result-set and set up error handling
+    cursor, currErr := collection.Find(CTX, bson.M{})
 
     if currErr != nil {
         response.WriteHeader(http.StatusInternalServerError)
         response.Write([]byte(`{"message": "` + currErr.Error() + `"}`))
     }
-    defer cursor.Close(context.TODO())
+    defer cursor.Close(CTX)
 
     var items []MenuItem
-    for cursor.Next(context.TODO()) {
+    for cursor.Next(CTX) {
         var menuItem MenuItem
         cursor.Decode(&menuItem)
         items = append(items, menuItem)
@@ -47,7 +51,7 @@ func Item(response http.ResponseWriter, request *http.Request) {
   collection := db.Session.Database("sandwiches-after-dark").Collection("menu")
 
   var menuItem MenuItem
-  err := collection.FindOne(context.TODO(), MenuItem{ID: id}).Decode(&menuItem)
+  err := collection.FindOne(CTX, MenuItem{ID: id}).Decode(&menuItem)
 
   if err != nil {
       response.WriteHeader(http.StatusInternalServerError)
