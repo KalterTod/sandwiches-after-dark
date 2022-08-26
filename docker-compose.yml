@@ -14,6 +14,6 @@ services:
     sandwiches-after-dark:
         build: .
         environment:
-          - MONGODB_URL="mongodb://${MONGODB_ADMIN_USERNAME}:${MONGODB_ADMIN_PASSWORD}@mongo:27017/"
+          - MONGODB_URL="mongodb://${MONGODB_ADMIN_USERNAME}:${MONGODB_ADMIN_PASSWORD}@localhost:27017/"
         ports:
-          - "8080:8080"
+          - "8000:8000"

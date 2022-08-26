@@ -14,7 +14,8 @@ func handleRequests() {
 	router.HandleFunc("/menu", menu.Menu).Methods("GET")
 	router.HandleFunc("/item/{id}", menu.Item).Methods("GET")
 	router.HandleFunc("/item", menu.PostItem).Methods("POST")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	router.HandleFunc("/item/{id}", menu.EditItem).Methods("PUT")
+	log.Fatal(http.ListenAndServe(":8000", router))
 }
 
 func main() {
