@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"sandwiches-after-dark/menu"
+	"sandwiches-after-dark/user"
 
 	"github.com/gorilla/mux"
 )
@@ -15,6 +16,12 @@ func handleRequests() {
 	router.HandleFunc("/item/{id}", menu.Item).Methods("GET")
 	router.HandleFunc("/item", menu.PostItem).Methods("POST")
 	router.HandleFunc("/item/{id}", menu.EditItem).Methods("PUT")
+
+	router.HandleFunc("/user/{id}", user.User).Methods("GET")
+	router.HandleFunc("/user", user.CreateUser).Methods("POST")
+	router.HandleFunc("/user/{id}", user.EditUser).Methods("PUT")
+	router.HandleFunc("/login", user.Login).Methods("POST")
+
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
 
